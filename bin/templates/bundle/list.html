@@ -1,0 +1,67 @@
+<div class="ui">
+
+
+<h1>{{entity}}</h1>  
+    
+
+<div class="ui form ">
+  <div class="fields">
+  
+        
+    <div class="ui icon input">
+      <input type="text" placeholder="Search..." ng-model="search" ng-keypress="onSearch('key', $event)">
+      <i class="circular search link icon" ng-click="onSearch()"></i>
+    </div>
+        
+  
+    <!--<div class="field">
+     <select ng-model="filter.enabled" ng-change="onFilter('enabled')" class="ui dropdown">
+        <option value="null">Tous</option>
+        <option value="true">Activé</option>
+        <option value="false">Désactivé</option>
+      </select>
+    </div>-->
+      
+  </div>
+</div>
+    
+
+    
+<table class="ui celled table">
+        <thead>
+        <tr>
+            <th class="center aligned"><input type="checkbox" class="ui checkbox" ng-click="checkAll({{entity}})" ng-model="checkHeader"></th>
+            {{#tableHeader obj}}{{/tableHeader}}
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-if="{{entity}}.length == 0">
+            <td colspan="4">
+                <div class="ui message">
+                  <p>Aucune données</p>
+                </div>
+            </td>
+        </tr>
+        <tr ng-repeat="{{variable}} in {{entity}} track by {{variable}}._id">
+            <td class="center aligned"><input type="checkbox" class="ui checkbox"  ng-model="{{variable}}.checked" ng-click="checkOne()"></td>
+            {{#table obj variable}}{{/table}}
+            <td>
+                <button class="ui button" ng-click="duplicateSubmit({{variable}}, $index)">Dupliquer</button>
+                <a class="ui button" ui-sref="{{variable}}s-edit({id: {{variable}}._id})">Editer</a>
+                <button class="ui red button" ng-click="deleteSubmit({{variable}}, $index)">Supprimer</button>
+            </td>
+        </tr>
+    </tbody>
+   <tfoot ng-if="page.totalPage > 1">
+    <tr><th colspan="4">
+      <div pagination class="ui right floated pagination menu" page="page"></div>
+    </th>
+  </tr></tfoot>
+</table>
+    <div>
+     <a class="ui green right floated button" ui-sref="{{variable}}s-add">Ajouter</a>
+     <button class="ui red button" ng-click="allDeleteSubmit({{entity}})" ng-disabled="allAreChecked">Supprimer les éléments sélectionnés</button>
+  </div>
+
+    
+</div>

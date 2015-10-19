@@ -1,0 +1,44 @@
+<div class="ui container">
+  
+    <notification></notification>
+    
+    <h1 class="ui header">{{entity}}</h1>
+
+        <form name="{{entity}}Form" class="ui form">
+            <div class="ui segment">
+                
+                  
+               <div class="field">
+                    
+                    <label>Field 1</label>
+                      <div class="inline field">
+                          <input type="text" ng-model="{{entity}}.fiedl1" name="fiedl1" required> 
+                          <form-error field="{{entity}}Form.fiedl1"></form-error>
+      
+                    </div>
+
+                </div>
+                  
+                <div class="field">
+                    
+                    <label>Field 2</label>
+                      <div class="inline field">
+                          <input type="email" ng-model="{{entity}}.fiedl2" name="fiedl2" required > 
+                          <form-error field="{{entity}}Form.fiedl2"></form-error>
+
+                    </div>
+
+                </div>
+
+            </div> 
+            
+            
+            <div class="ui segment">
+                <a ui-sref="{{_entity}}s" class="ui button">Cancel</a>
+                <button type="submit" ng-disabled="{{entity}}Form.$invalid" ng-click="saveSubmit()" ng-class="{green: {{entity}}Form.$valid}" class="ui button">Ok</button>
+            </div>  
+        </form>
+</div>
+    
+
+

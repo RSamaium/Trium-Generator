@@ -1,0 +1,1 @@
+router.use('/:{{parent}}_id/{{variable}}s', {{variable}}Route(app));

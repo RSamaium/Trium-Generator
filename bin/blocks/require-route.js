@@ -1,0 +1,1 @@
+var {{variable}}Route = require('../../../bundles/{{entity}}/routes/index');
