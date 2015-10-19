@@ -3,20 +3,22 @@
   "version": "0.1.0",
   "description": "Environment for a web application with AngularJS, NodeJS and MongoDB. Generator to generate entities from a view",
   "dependencies": {
+    "colors": "*",
+    "commander": "*",
     "diff": "^1.4.0",
+    "fs-extra": "^0.24.0",
+    "gift": "0.6.1",
     "gulp": "^3.9.0",
     "gulp-install": "^0.6.0",
     "handlebars": "^3.0.3",
+    "inquirer": "*",
     "js-beautify": "^1.5.10",
     "jsdom": "^5.6.0",
     "lodash": "^3.10.0",
     "sprintf-js": "^1.0.3",
-    "commander": "*",
-    "inquirer": "*",
-    "colors": "*",
-    "gift": "0.6.1",
     "through2": "^2.0.0"
   },
+  "preferGlobal": true,
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

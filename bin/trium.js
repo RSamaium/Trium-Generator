@@ -27,19 +27,25 @@ var createApp = require("./commands/create-app.js"),
     generateBundle = require("./commands/generate-bundle.js"),
     parseBundle = require("./commands/parse-bundle.js"),
     uninstallBundle = require("./commands/uninstall-bundle.js"),
-    updateBundle = require("./commands/update-bundle.js");
+    updateBundle = require("./commands/update-bundle.js"),
+    installBundle = require("./commands/install-bundle.js");
 
 
 program
   .version('0.1.1');
 
 program
-  .command('install')
+  .command('create-app')
   .description('create a project')
   .action(createApp);
 
 program
-  .command('create <name>')
+  .command('install <bundle>')
+  .description('install an existing bundle')
+  .action(installBundle);
+
+program
+  .command('create <bundle>')
   .description('create a empty bundle')
   .action(createBundle);
 
