@@ -21,7 +21,7 @@ var sprintf = require("sprintf-js").sprintf;
 */
 var Block =  function(path, bundle, file) {
     
-    var stream, lowerName, capiName, bundleClient, bundleServer;
+     var stream, lowerName, capiName, bundleClient, bundleServer;
     
      if (file == null) {
          file = _.capitalize(bundle) + ".js";
@@ -86,7 +86,16 @@ var Block =  function(path, bundle, file) {
         },
     
         end: function() {
-             stream.pipe(gulp.dest(path));
+            stream.pipe(gulp.dest(path));
+            return new Promise(function(resolv, reject) {
+                 stream.on('end', function() {
+                     resolv();
+                 });
+                 stream.on('error', function(err) {
+                     reject();
+                 });
+            });
+           
         }
     
     }

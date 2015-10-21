@@ -11,6 +11,7 @@ var git = require("gift"),
     exists = require("../promises/exists"),
     rename = require("../promises/rename"),
     mkdir = require("../promises/mkdir"),
+    system = require("../core/system"),
     rmdir = require("../promises/rmdir");
 
 module.exports = function(bundle) {
@@ -50,9 +51,29 @@ module.exports = function(bundle) {
         
         return rename(".tmp/server", "server/bundles/" + bundle);
     
+     }).then(function() {
+        
+        return rename(".tmp/trium.json", "server/bundles/" + bundle + "/bin/trium.json");
+        
+     }).then(function() {
+        
+        var install;
+        
+        return new Promise(function(resolv, reject) {
+            exists(".tmp/bin/install.js").then(function(ret) {
+                if (ret) {
+                    console.log("Execute `install.js`".yellow);
+                    require(".tmp/bin/install.js")(bundle, resolv, reject, system);
+                }
+                else {
+                    resolv();
+                }
+            });
+        });
+        
     }).then(function() {
         
-        return rename(".tmp/trium.json", "server/bundles/" + bundle + "/trium.json");
+         return rename(".tmp/bin", "server/bundles/" + bundle + "/bin");
         
     }).then(function() {
         

@@ -4,6 +4,7 @@ var program = require('commander'),
     inquirer = require("inquirer"),
     colors = require('colors'),
     fs = require('fs'),
+    process = require('process'),
     _ = require("lodash"),
     beautify = require('js-beautify').js_beautify,
     mkdir = require("../promises/mkdir"),
@@ -14,6 +15,7 @@ var program = require('commander'),
     parse = require("../core/parse"),
     Block = require("../core/block"),
     fspath = require("path"),
+    system = require("../core/system"),
     path = config.paths;
 
 module.exports = function(bundleName, options) {
@@ -90,7 +92,7 @@ module.exports = function(bundleName, options) {
            
         }
          
-        b.end();
+        return b.end();
         
         if (schema.ref.length > 0) {
             var b = Block(Block.BUNDLE_SERVER_MODEL, bundleName, null)
@@ -155,9 +157,27 @@ module.exports = function(bundleName, options) {
             })
             .end();
         }
-        
-        
+    
 
+    }).then(function() {
+        
+        return new Promise(function(resolv, reject) {
+            var updateFile = process.cwd() + "/server/bundles/" + bundleName + "/bin/update.js";
+            
+            fs.exists(updateFile, function (exists) {
+            
+                if (exists) {
+                    console.log("Execute `update.js`".yellow);
+                    require(updateFile)(bundleName, resolv, reject, system);
+                }
+                else {
+                    resolv();
+                }
+
+            });
+
+        });
+        
     }).catch(function(err) {
         console.log(err.stack.red);
     });

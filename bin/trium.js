@@ -1,28 +1,8 @@
 #!/usr/bin/env node
 
-/*
-    inquirer = require("inquirer"),
-    colors = require('colors'),
-    fs = require('fs'),
-    _ = require("lodash"),
-   
-    beautify = require('js-beautify').js_beautify;
-
-var mkdir = require("./promises/mkdir"),
-    rmdir = require("./promises/rmdir"),
-    writeFile = require("./promises/writeFile"),
-    exists = require("./promises/exists"),
-    template = require("./promises/template");
-
-var config = require("./config"),
-    parse = require("./parse"),
-    Shortcut = require("./shortcut"),
-    Block = require("./block"),
-    path = config.paths;
-*/
-var program = require('commander');
-
-var createApp = require("./commands/create-app.js"),
+var program = require('commander'),
+    
+    createApp = require("./commands/create-app.js"),
     createBundle = require("./commands/create-bundle.js"),
     generateBundle = require("./commands/generate-bundle.js"),
     parseBundle = require("./commands/parse-bundle.js"),

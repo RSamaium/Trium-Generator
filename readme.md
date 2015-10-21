@@ -8,7 +8,7 @@ v0.1.0
     
 # Create Trium environment
 
-    trium install
+    trium create-app
     
 # Create a bundle
 
