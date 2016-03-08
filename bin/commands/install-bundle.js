@@ -1,9 +1,9 @@
 "use strict";
 
 var _package = {
-    
+
     "User": "https://github.com/RSamaium/Trium-Bundle-User"
-    
+
 };
 
 var git = require("gift"),
@@ -15,24 +15,23 @@ var git = require("gift"),
     rmdir = require("../promises/rmdir");
 
 module.exports = function(bundle) {
-    
+
     var repo = _package[bundle];
-    
+
     if (!repo) {
         console.log(bundle + " Bundle not found");
         return;
     }
-    
+
     console.log("-- Download Trium Bundle Package : " + repo + " --");
-    
-    exists(".tmp").then(function(ret) {
-        
-        if (!ret) {
-            return mkdir(".tmp", true);
-        }
-        
+
+
+    rmdir(".tmp").then(function() {
+
+      return mkdir(".tmp", true);
+
     }).then(function() {
-        
+
         return new Promise(function(resolv, reject) {
             git.clone(repo, ".tmp", function(err, repo) {
                  if (err) {
@@ -42,43 +41,43 @@ module.exports = function(bundle) {
                 resolv();
             });
         });
-    
+
     }).then(function() {
-        
+
        return rename(".tmp/client", "client/app/bundles/" + bundle);
-        
+
     }).then(function() {
-        
+
         return rename(".tmp/server", "server/bundles/" + bundle);
-    
+
      }).then(function() {
-        
-        return rename(".tmp/trium.json", "server/bundles/" + bundle + "/bin/trium.json");
-        
+
+           return rename(".tmp/bin", "server/bundles/" + bundle + "/bin");
+
      }).then(function() {
-        
+
+          return rename(".tmp/trium.json", "server/bundles/" + bundle + "/trium.json");
+
+    }) .then(function() {
+
         var install;
-        
+
         return new Promise(function(resolv, reject) {
-            exists(".tmp/bin/install.js").then(function(ret) {
+            exists("server/bundles/" + bundle + "/bin/install.js").then(function(ret) {
                 if (ret) {
                     console.log("Execute `install.js`".yellow);
-                    require(".tmp/bin/install.js")(bundle, resolv, reject, system);
+                    require("server/bundles/" + bundle + "/bin/install.js")(bundle, resolv, reject, system);
                 }
                 else {
                     resolv();
                 }
             });
         });
-        
+
     }).then(function() {
-        
-         return rename(".tmp/bin", "server/bundles/" + bundle + "/bin");
-        
-    }).then(function() {
-        
+
         return rmdir(".tmp");
-        
+
     }).then(function() {
         console.log((bundle + " has been installed. Restart server to view the modifications").green);
     })
@@ -86,5 +85,5 @@ module.exports = function(bundle) {
         console.log(err);
     })
 
-    
+
 }

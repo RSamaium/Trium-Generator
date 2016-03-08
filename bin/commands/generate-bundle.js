@@ -14,6 +14,7 @@ var program = require('commander'),
     update = require("./update-bundle"),
     parse = require("../core/parse"),
     fspath = require("path"),
+    pluralize = require("pluralize"),
     path = config.paths;
 
 module.exports = function(name, options) {
@@ -21,7 +22,7 @@ module.exports = function(name, options) {
     if (options.client === undefined && options.server === undefined) {
         options.client = true;
         options.server = true;
-    } 
+    }
 
     var bundleClient = path.bundles + name,
         bundleServer = path.server + name;
@@ -30,10 +31,11 @@ module.exports = function(name, options) {
 
     var directories = {
         // filename : destination
-        "controller.js":  "controllers/" + name + ".js",
-        "model.js": "models/" + name + ".js",
-        "route.js": "routes/" + name + ".js",
-        "list.html": "views/" + lowerName + "s.html"
+        "controller.js":  "controllers/" + lowerName + ".js",
+        "model.js": "models/" + lowerName + ".js",
+        "route.js": "routes/" + lowerName + ".js",
+        "list.html": "views/list.html",
+        "index.html": "views/index.html"
     };
 
     var tplData = {
@@ -75,20 +77,29 @@ module.exports = function(name, options) {
             name: "title",
             message: "Title",
             default: name
-        }
+        },
+        {
+            type: "input",
+            name: "description",
+            message: "Description (documentation)"
+        },
     ], function(result) {
 
         tplData = {
             entity: name,
             variable: lowerName,
+            entityPluralize: pluralize(name),
+            variablePluralize: pluralize(lowerName),
+            description: result.description,
             api_path: result.api_path + "s",
             client_path: result.client_path,
-            filter: {isUpload: true}
+            filter: {isUpload: true},
+            title: result.title
         }
 
         var p = exists(config.getBinPath("templates", "view.html"), true).then(function() {
 
-            var tpl = bundleClient + "/views/" +  lowerName + ".html";
+            var tpl = bundleClient + "/views/show.html";
             return parse(tpl, lowerName);
 
         }).then(function(schema) {
@@ -125,6 +136,12 @@ module.exports = function(name, options) {
                     })
                     .then(function() {
                         return mkdir(bundleServer + "/schema");
+                    })
+                    .then(function() {
+                        return mkdir(bundleServer + "/doc");
+                    })
+                    .then(function() {
+                        return mkdir(bundleServer + "/test");
                     });
 
                 directories = {
@@ -132,7 +149,9 @@ module.exports = function(name, options) {
                     "model.js"      : "model/" + name + ".js",
                     "router.js"     : "routes/index.js",
                     "schema.js"     : "schema/index.js",
-                    "schemaObj.js"  : "schema/schema.js"
+                    "schemaObj.js"  : "schema/schema.js",
+                    "doc.js"        : "doc/index.js",
+                    "test.js"       : "test/index.js"
                 };
 
                 for (var key in directories) {
@@ -155,5 +174,5 @@ module.exports = function(name, options) {
 
 
     });
-    
+
 }

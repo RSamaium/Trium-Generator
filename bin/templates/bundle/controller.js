@@ -8,7 +8,7 @@ app.controller("{{entity}}Ctrl", function($scope, controllerCrud) {
     
 });
 
-app.controller("{{entity}}sCtrl", function($scope, controllerCrud, $location) {
+app.controller("{{entityPluralize}}Ctrl", function($scope, controllerCrud, $location) {
     
     controllerCrud.set("{{entity}}", ["query", "delete"], $scope);
 
