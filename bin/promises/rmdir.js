@@ -1,11 +1,11 @@
 var fs = require("fs");
 var path = require("path");
- 
+
 
 module.exports = function(dir) {
-    
+
      return new Promise(function(resolv, reject) {
-        
+
          var rmdir = function(dir) {
             var list = fs.readdirSync(dir);
 
@@ -25,9 +25,13 @@ module.exports = function(dir) {
             }
             fs.rmdirSync(dir);
          }
-         
-         rmdir(dir);
-         resolv();
+
+         fs.exists(dir, function(exists) {
+             if (exists) {
+               rmdir(dir);
+             }
+             resolv();
+         });
 
     }).then(function() {
         console.log("Delete Directory --> " + dir);

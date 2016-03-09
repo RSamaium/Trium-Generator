@@ -2,7 +2,8 @@
 
 var _package = {
 
-    "User": "https://github.com/RSamaium/Trium-Bundle-User"
+    "User": "https://github.com/RSamaium/Trium-Bundle-User",
+    "Me": "https://github.com/RSamaium/Trium-Bundle-Me"
 
 };
 
